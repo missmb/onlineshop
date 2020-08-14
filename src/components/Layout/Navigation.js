@@ -34,7 +34,7 @@ export default function Navigation() {
         <MenuIcon />
     </IconButton>
     <Typography variant="h6" className={classes.title} onClick={home}>
-        Marketplace
+        OnlineShop
     </Typography>
     <NavbarAuth />
     </Toolbar>

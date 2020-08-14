@@ -3,6 +3,9 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 
+const userRoute = require("./routes/userRoute");
+const itemRoute = require("./routes/itemRoute");
+
 // set up express
 
 const app = express();
@@ -31,4 +34,5 @@ mongoose.connect(
 
 // // set up routes
 
-app.use("/users", require("./routes/userRoute"));
+app.use("/users", userRoute);
+app.use("/items", itemRoute);
