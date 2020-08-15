@@ -1,31 +1,60 @@
 const router = require("express").Router();
 const Item = require("../models/itemModel");
+const db = require("mongoose");
 
 router.post("/add", async (req, res) => {
   try {
-    let { name, category, price, unit } = req.body;
-
+    let { name, category, image, price, description, quantity} = req.body;
 
     const newItem = new Item({
-      name,
-      category,
-      price,
-      unit
+      name, category, image, price, description, quantity
     });
     const savedItem = await newItem.save();
-    res.json(savedUser);
+    res.json(savedItem);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
+router.get('/', async (req, res) => {
+  try {
+    const items = await Item.find();
+    if (!items) throw Error('No items');
 
-router.get("/:idItem", async (req, res) => {
-  url = req.params.item;
-  item = url.split("-").join(" ");
-  Item.find({ nameItem: item }, function (err, DataItem) {
-    return res.status(200).json({ success: true, data: DataItem });
-  }).sort({ _id: -1 });
+    res.status(200).json(items);
+  } catch (e) {
+    res.status(400).json({ msg: e.message });
+  }
+});
+
+// router.get('/:id', async (req, res) => {
+//   try {
+//     const item = await Item.findById(req.params.id);
+//     if (!item)
+//       return res.status('400').json({
+//         error: "Product not found"
+//       })
+    
+//   } catch (err) {
+//     return res.status('400').json({
+//       error: "Could not retrieve product"
+//     })
+//   }
+// });
+
+router.delete('/delete/:id', async (req, res) => {
+  try {
+    const item = await Item.findById(req.params.id);
+    if (!item) throw Error('No item found');
+
+    const removed = await item.remove();
+    if (!removed)
+      throw Error('Something went wrong while trying to delete the item');
+
+    res.status(200).json({ success: true });
+  } catch (e) {
+    res.status(400).json({ msg: e.message, success: false });
+  }
 });
 
 module.exports = router;
