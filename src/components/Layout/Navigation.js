@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Navigation() {
     const classes = useStyles();
     const history = useHistory();
-  const home = () => history.push("/");
+    const home = () => history.push("/");
 
   return (
     <AppBar position="static">

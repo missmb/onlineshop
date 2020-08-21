@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 
-import ItemPage from "../components/pages";
+import ItemPage from "../components/pages/item";
 
 class MainRoute extends Component {
   render() {

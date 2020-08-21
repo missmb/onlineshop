@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Axios from "axios";
 import Navigation from "./components/Layout/Navigation";
-import Home from "./components/pages/Home";
+import Home from "./components/pages/Home/index";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
+import Items from "./components/pages/item";
 import UserContext from "./context/userContext";
 
 import "./App.css";
@@ -51,6 +52,7 @@ export default function App() {
               <Route exact path="/" component={Home} />
               <Route path="/login" component={Login} />
               <Route path="/register" component={Register} />
+              <Route path="/items" component={Items} />
             </Switch>
           </div>
         </UserContext.Provider>

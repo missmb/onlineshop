@@ -1,9 +1,12 @@
 import React, {useState} from 'react';
 import { useHistory } from "react-router-dom";
-import Axios from "axios";
+// import Axios from "axios";
 import ErrorNotice from "../ErrorNotice";
 import apiItem from './../../../action/ItemAction';
 
+import AddIcon from "@material-ui/icons/Add";
+import Dropzone from "react-dropzone";
+// import Compress from "compress.js";
 
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -27,45 +30,87 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function AddItem() {
-    const classes = useStyles()
-    const history = useHistory();
+  const classes = useStyles()
+  const history = useHistory();
+
   const [name, setName] = useState();
   const [description, setDescription] = useState();
   const [image, setImage] = useState();
   const [category, setCategory] = useState();
   const [quantity, setQuantity] = useState();
-  const [price, setPrice] = useState();
+  const [price, setPrice] = useState(0);
   const [error, setError] = useState();
 
     
-    const submit = async (e) => {
-        e.preventDefault();
-        try {
-          const data = {  name, category, image, price, description, quantity };
-          // await Axios.post('http://localhost:5000/items/add', data)
-          // .then(res => console.log(res.data))
-          // .catch((err) => console.log(err.response));
-          // console.log(data)
-          // await apiItem.newItem(data);
-          await apiItem.newItem(data)
-          .then(res => console.log(res.data))
-          history.push("/");
-        } catch (err) {
-          err.response.data.msg && setError(err.response.data.msg);
-        }
-      };
+  // const onDrop = async(e) => {
+  //   e.preventDefault();
+  //   const compress = new Compress();
+  //   const files = [...e];
+  //   compress
+  //     .compress(files, {
+  //       size: 4,
+  //       quality: 0.75,
+  //       maxWidth: 1920,
+  //       maxHeight: 1000,
+  //       resize: true,
+  //     })
+  // }
+  const submit = async (e) => {
+      e.preventDefault();
+      try {
+        const data = {  name, category, image, price, description, quantity };
+        // await Axios.post('http://localhost:5000/items/add', data)
+        // .then(res => console.log(res.data))
+        // .catch((err) => console.log(err.response));
+        // console.log(data)
+        // await apiItem.newItem(data);
+        await apiItem.newItem(data)
+        .then(res => console.log(res.data))
+        .catch((err) => console.log(err.response));
+        // history.push("/");
+      } catch (err) {
+        err.response.data.msg && setError(err.response.data.msg);
+      }
+    };
 
   return (
       <div>
-    <ErrorNotice message={error} clearError={() => setError(undefined)} />
+        {error && (
+            <ErrorNotice message={error} clearError={() => setError(undefined)} />
+        )}
     <form className={classes.root} onSubmit={submit} noValidate autoComplete="off">
-      <TextField id="name" label="name" variant="filled" name="name"
+    {/* <Dropzone
+          onDrop={onDrop}
+          multiple={true}
+          accept="image/*"
+          maxFiles={5}
+          maxSize={80000000}
+        >
+          {({ getRootProps, getInputProps }) => (
+            <div
+              style={{
+                width: "70px",
+                height: "80px",
+                border: "1px solid lightgray",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              {...getRootProps()}
+            >
+              <input {...getInputProps()} />
+              <AddIcon />
+              Image
+            </div>
+          )}
+        </Dropzone> */}
+      <TextField id="name" label="name" variant="filled"
       onChange={(e) => setName(e.target.value)}/>
-      <TextField id="description" label="description" variant="filled" name="description"
+      <TextField id="description" label="description" variant="filled"
       onChange={(e) => setDescription(e.target.value)}/>
       <TextField id="quantity" label="quantity" variant="filled" 
       onChange={(e) => setQuantity(e.target.value)}/>
-      <TextField id="price" label="price" variant="filled" 
+      <TextField id="price" label="price" variant="filled" type="number"
       onChange={(e) => setPrice(e.target.value)}/>
       <TextField id="image" label="image" variant="filled" 
       onChange={(e) => setImage(e.target.value)}/>

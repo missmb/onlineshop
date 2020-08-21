@@ -7,12 +7,12 @@ const ItemSchema = new mongoose.Schema({
     data: Buffer,
     contentType: String
   },
-  price: { type: String, required: true, minlength: 3 },
+  price: { type: Number, required: true, minlength: 3 },
   description: { type: String , required: true},
   quantity: { type: String, required: true },
   createdAt: {
-    type: Date,
-    default: Date.now
+    type: String,
+    default: Date.now()
   }
 });
 

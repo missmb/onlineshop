@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import UserContext from "../../context/userContext";
-import AddItem from './../pages/item/AddItem'
+import UserContext from "../../../context/userContext";
+import AddItem from './AddItem'
 
 export default function Home() {
   const { userData } = useContext(UserContext);
@@ -10,7 +10,7 @@ export default function Home() {
     <div className="page center">
       {userData.user ? (
         <>
-        <h1>Welcome {userData.user.username}</h1>
+        <h1>Product</h1>
           <AddItem/>
         </>
       ) : (

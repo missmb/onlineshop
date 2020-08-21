@@ -6,6 +6,19 @@ router.post("/add", async (req, res) => {
   try {
     let { name, category, image, price, description, quantity} = req.body;
 
+    if (!name || !category || !image || !price || !description || !quantity)
+      return res.status(400).json({ msg: "Not all fields have been entered." });
+    if (price.length < 3)
+      return res
+        .status(400)
+        .json({ msg: "The price needs to be at least 3 numbers long." });
+
+    const existingItem = await Item.findOne({ name: name });
+    if (existingItem)
+      return res
+        .status(400)
+        .json({ msg: "An Product with this name already exists." });
+
     const newItem = new Item({
       name, category, image, price, description, quantity
     });

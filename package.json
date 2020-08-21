@@ -11,6 +11,7 @@
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",
+    "compress.js": "^1.1.2",
     "concurrently": "^5.2.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
@@ -19,6 +20,7 @@
     "mongoose": "^5.9.28",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-dropzone": "^11.0.3",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.2",
     "redux": "^4.0.5"
