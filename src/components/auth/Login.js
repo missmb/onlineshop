@@ -1,7 +1,8 @@
 import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import UserContext from "../../context/userContext";
-import Axios from "axios";
+// import uri from './../../route/baseURI'
+import Axios from 'axios';
 import ErrorNotice from "../pages/ErrorNotice";
 
 import Avatar from '@material-ui/core/Avatar';
