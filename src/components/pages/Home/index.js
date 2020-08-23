@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import UserContext from "../../../context/userContext";
 import apiItem from '../../../action/ItemAction';
 import Item from './item';
+import { Grid } from "@material-ui/core";
 
 export default function Home() {
   const { userData } = useContext(UserContext);
@@ -23,16 +24,20 @@ export default function Home() {
       {userData.user ? (
         <>
         <h1>Welcome {userData.user.username}</h1>
+        <Link to="/items">Add Item</Link>
 
+      <Grid container spacing={1} justify="center">
       {items.map((item) => (
                 <Item
                   key={item._id}
+                  idItem={item._id}
                   name={item.name}
                   price={item.price}
                   description={item.description}
                   category={item.category}
                 />
               ))}
+              </Grid>
         </>
       ) : (
         <>

@@ -7,6 +7,8 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Delete from '@material-ui/icons/Delete';
+import apiItem from '../../../action/ItemAction';
 
 
 const useStyles = makeStyles({
@@ -19,19 +21,26 @@ const useStyles = makeStyles({
 export default function Item(props) {
     const classes = useStyles();
 
+    const deleteItem = async (e) => {
+      e.preventDefault();
+
+      apiItem.deleteItem(props.idItem)
+      .then(res => console.log(res.data))
+        .catch((err) => console.log(err.response));
+    }
 return(
     <Card className={classes.root}>
         <CardActionArea>
           <CardMedia
             component="img"
-            alt="Contemplative Reptile"
+            alt={props.name}
             height="140"
-            image="/static/images/cards/contemplative-reptile.jpg"
+            image="/public/image/item/item1.jpg"
             title="Contemplative Reptile"
           />
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
-              {props.name}
+              {props.price}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
               {props.description}
@@ -44,6 +53,9 @@ return(
           </Button>
           <Button size="small" color="primary">
             Learn More
+          </Button>
+          <Button>
+          <Delete onClick={deleteItem}/>
           </Button>
         </CardActions>
       </Card>
