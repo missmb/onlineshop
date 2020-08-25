@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Delete from '@material-ui/icons/Delete';
 import apiItem from '../../../action/ItemAction';
+import { useHistory } from "react-router-dom";
 
 
 const useStyles = makeStyles({
@@ -20,6 +21,7 @@ const useStyles = makeStyles({
   
 export default function Item(props) {
     const classes = useStyles();
+    const history = useHistory();
 
     const deleteItem = async (e) => {
       e.preventDefault();
@@ -28,6 +30,17 @@ export default function Item(props) {
       .then(res => console.log(res.data))
         .catch((err) => console.log(err.response));
     }
+
+    
+
+    const gotodetail = async (e) => {
+      e.preventDefault();
+      history.push("/detail/" + props.name);
+    }
+
+    // handleUserDetail = (username) => {
+    //   this.props.history.push("/" + username);
+    // };
 return(
     <Card className={classes.root}>
         <CardActionArea>
@@ -39,6 +52,9 @@ return(
             title="Contemplative Reptile"
           />
           <CardContent>
+            <Typography gutterBottom variant="h5" component="h2" onClick={gotodetail}>
+              {props.idItem}
+            </Typography>
             <Typography gutterBottom variant="h5" component="h2">
               {props.price}
             </Typography>

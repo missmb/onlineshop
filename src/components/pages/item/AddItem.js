@@ -5,7 +5,7 @@ import apiItem from './../../../action/ItemAction';
 
 import AddIcon from "@material-ui/icons/Add";
 import Dropzone from "react-dropzone";
-// import Compress from "compress.js";
+import Compress from "compress.js";
 
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AddItem() {
   const classes = useStyles()
+  const history = useHistory();
 
   const [name, setName] = useState();
   const [description, setDescription] = useState();
@@ -57,9 +58,15 @@ export default function AddItem() {
       e.preventDefault();
       try {
         const data = {  name, category, image, price, description, quantity };
+        // await Axios.post('http://localhost:5000/items/add', data)
+        // .then(res => console.log(res.data))
+        // .catch((err) => console.log(err.response));
+        // console.log(data)
+        // await apiItem.newItem(data);
         await apiItem.newItem(data)
         .then(res => console.log(res.data))
         .catch((err) => console.log(err.response));
+        // history.push("/");
       } catch (err) {
         err.response.data.msg && setError(err.response.data.msg);
       }

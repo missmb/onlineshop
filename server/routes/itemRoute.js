@@ -40,20 +40,26 @@ router.get('/', async (req, res) => {
   }
 });
 
-// router.get('/:id', async (req, res) => {
-//   try {
-//     const item = await Item.findById(req.params.id);
-//     if (!item)
-//       return res.status('400').json({
-//         error: "Product not found"
-//       })
-    
-//   } catch (err) {
-//     return res.status('400').json({
-//       error: "Could not retrieve product"
-//     })
-//   }
-// });
+router.get('/detail/:name', async (req, res) => {
+  try {
+    const item = await Item.findOne({name : req.params.name});
+    if (!item)
+      return res.status('400').json({
+        error: "Product not found"
+      })
+     return res.status(200).json({ success: true, data : item});
+  } catch (err) {
+    return res.status('400').json({
+      error: "Could not retrieve product"
+    })
+  }
+});
+
+// exports.detailPost = async (req, res) => {
+//   await Post.find({ _id: req.params.idPost }, function (err, postData) {
+//     return res.status(200).json({ success: true, data: postData });
+//   });
+// };
 
 router.delete('/delete/:id', async (req, res) => {
   try {

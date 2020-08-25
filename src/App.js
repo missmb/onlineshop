@@ -6,6 +6,7 @@ import Home from "./components/pages/Home/index";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import Items from "./components/pages/item";
+import DetailItem from "./components/pages/item/DetailItem";
 import UserContext from "./context/userContext";
 
 import "./App.css";
@@ -53,6 +54,7 @@ export default function App() {
               <Route path="/login" component={Login} />
               <Route path="/register" component={Register} />
               <Route path="/items" component={Items} />
+              <Route path="/detail/:name" component={DetailItem} />
             </Switch>
           </div>
         </UserContext.Provider>
