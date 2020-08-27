@@ -19,7 +19,8 @@ app.listen(PORT, () => console.log(`The server has started on port: ${PORT}`));
 // set up mongoose
 
 mongoose.connect(
-  process.env.MONGODB_CONNECTION_STRING,
+  // process.env.MONGODB_CONNECTION_STRING,
+  "mongodb://localhost:1212/onlineshop",
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,

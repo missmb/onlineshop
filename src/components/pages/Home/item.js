@@ -38,9 +38,6 @@ export default function Item(props) {
       history.push("/detail/" + props.name);
     }
 
-    // handleUserDetail = (username) => {
-    //   this.props.history.push("/" + username);
-    // };
 return(
     <Card className={classes.root}>
         <CardActionArea>
@@ -53,7 +50,7 @@ return(
           />
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2" onClick={gotodetail}>
-              {props.idItem}
+              {props.name}
             </Typography>
             <Typography gutterBottom variant="h5" component="h2">
               {props.price}

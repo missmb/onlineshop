@@ -3,10 +3,7 @@ const mongoose = require("mongoose");
 const ItemSchema = new mongoose.Schema({
   name: { type: String, required: true, unique: true },
   category:String,
-  image : {
-    data: Buffer,
-    contentType: String
-  },
+  image : String,
   price: { type: Number, required: true, minlength: 3 },
   description: { type: String , required: true},
   quantity: { type: String, required: true },
