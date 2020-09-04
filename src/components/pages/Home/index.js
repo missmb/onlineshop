@@ -32,6 +32,7 @@ export default function Home() {
                   key={item._id}
                   idItem={item._id}
                   name={item.name}
+                  image={item.image}
                   price={item.price}
                   description={item.description}
                   category={item.category}

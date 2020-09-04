@@ -1,11 +1,29 @@
 const router = require("express").Router();
 const Item = require("../models/itemModel");
 const db = require("mongoose");
+var multer = require("multer");
+var path = require("path");
+var fs = require("fs");
 
-router.post("/add", async (req, res) => {
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/image/item");
+  },
+  filename: function (req, file, cb) {
+    cb(
+      null,
+      "item_" + Date.now() + path.extname(file.originalname)
+    );
+  },
+});
+
+router.post("/add", multer({ storage: storage }).single("file"), async (req, res) => {
+  console.log(req.body)
   try {
-    let { name, category, image, price, description, quantity} = req.body;
+    let { name, category, price, description, quantity} = req.body;
 
+    let image = "/image/item/" + req.file.filename;
+    
     if (!name || !category || !image || !price || !description || !quantity)
       return res.status(400).json({ msg: "Not all fields have been entered." });
     if (price.length < 3)
@@ -20,7 +38,7 @@ router.post("/add", async (req, res) => {
         .json({ msg: "An Product with this name already exists." });
 
     const newItem = new Item({
-      name, category, image, price, description, quantity
+      name, category, image , price, description, quantity
     });
     const savedItem = await newItem.save();
     res.json(savedItem);
@@ -55,11 +73,6 @@ router.get('/detail/:name', async (req, res) => {
   }
 });
 
-// exports.detailPost = async (req, res) => {
-//   await Post.find({ _id: req.params.idPost }, function (err, postData) {
-//     return res.status(200).json({ success: true, data: postData });
-//   });
-// };
 
 router.delete('/delete/:id', async (req, res) => {
   try {
@@ -75,5 +88,10 @@ router.delete('/delete/:id', async (req, res) => {
     res.status(400).json({ msg: e.message, success: false });
   }
 });
+
+
+
+// exports.upload = multer({ storage: storage }).single("file");
+// exports.upload = multer({ storage: storage }).single("file");
 
 module.exports = router;

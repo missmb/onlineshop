@@ -1,11 +1,7 @@
 import React, {useState} from 'react';
-import { useHistory } from "react-router-dom";
 import ErrorNotice from "../ErrorNotice";
 import apiItem from './../../../action/ItemAction';
 
-import AddIcon from "@material-ui/icons/Add";
-import Dropzone from "react-dropzone";
-import Compress from "compress.js";
 
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -30,43 +26,43 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AddItem() {
   const classes = useStyles()
-  const history = useHistory();
 
-  const [name, setName] = useState();
-  const [description, setDescription] = useState();
-  const [image, setImage] = useState();
-  const [category, setCategory] = useState();
-  const [quantity, setQuantity] = useState();
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [image, setImage] = useState(null);
+  const [category, setCategory] = useState("");
+  const [quantity, setQuantity] = useState("");
   const [price, setPrice] = useState(0);
   const [error, setError] = useState();
+  const [review, setReview] = useState();
 
     
-  // const onDrop = async(e) => {
-  //   e.preventDefault();
-  //   const compress = new Compress();
-  //   const files = [...e];
-  //   compress
-  //     .compress(files, {
-  //       size: 4,
-  //       quality: 0.75,
-  //       maxWidth: 1920,
-  //       maxHeight: 1000,
-  //       resize: true,
-  //     })
-  // }
+  const onImageChange = async(e) => {
+    e.preventDefault();
+      // const data = new FormData();
+      // data.append("file", e.target.files[0]);
+    setImage(e.target.files[0])
+      setReview(URL.createObjectURL(e.target.files[0]));
+  }
   const submit = async (e) => {
       e.preventDefault();
+      console.log(image)
       try {
-        const data = {  name, category, image, price, description, quantity };
+        const data = new FormData();
+        data.append("file", image);
+        data.append("category", category);
+        data.append("name", name);
+        data.append("price", price);
+        data.append("description", description);
+        data.append("quantity", quantity);
+        data.append("try", "try");
+        // const data = {  name, category, image, price, description, quantity };
         // await Axios.post('http://localhost:5000/items/add', data)
         // .then(res => console.log(res.data))
         // .catch((err) => console.log(err.response));
-        // console.log(data)
-        // await apiItem.newItem(data);
         await apiItem.newItem(data)
         .then(res => console.log(res.data))
         .catch((err) => console.log(err.response));
-        // history.push("/");
       } catch (err) {
         err.response.data.msg && setError(err.response.data.msg);
       }
@@ -78,31 +74,21 @@ export default function AddItem() {
             <ErrorNotice message={error} clearError={() => setError(undefined)} />
         )}
     <form className={classes.root} onSubmit={submit} noValidate autoComplete="off">
-    {/* <Dropzone
-          onDrop={onDrop}
-          multiple={true}
+    
+        <input
           accept="image/*"
-          maxFiles={5}
-          maxSize={80000000}
-        >
-          {({ getRootProps, getInputProps }) => (
-            <div
-              style={{
-                width: "70px",
-                height: "80px",
-                border: "1px solid lightgray",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-              {...getRootProps()}
-            >
-              <input {...getInputProps()} />
-              <AddIcon />
-              Image
-            </div>
-          )}
-        </Dropzone> */}
+          className={classes.input}
+          style={{ display: 'none' }}
+          id="raised-button-file"
+          multiple
+          type="file"
+          onChange={onImageChange}
+        />
+        <label htmlFor="raised-button-file">
+          <Button variant="raised" component="span" className={classes.button}>
+            Upload
+          </Button>
+        </label> 
       <TextField id="name" label="name" variant="filled"
       onChange={(e) => setName(e.target.value)}/>
       <TextField id="description" label="description" variant="filled"
@@ -111,8 +97,6 @@ export default function AddItem() {
       onChange={(e) => setQuantity(e.target.value)}/>
       <TextField id="price" label="price" variant="filled" type="number"
       onChange={(e) => setPrice(e.target.value)}/>
-      <TextField id="image" label="image" variant="filled" 
-      onChange={(e) => setImage(e.target.value)}/>
       <TextField id="category" label="category" variant="filled" 
       onChange={(e) => setCategory(e.target.value)}/>
       <Button
@@ -122,6 +106,18 @@ export default function AddItem() {
         color="primary"
         className={classes.submit}>Add Item</Button>
     </form>
+    {review ? (
+              <div className="ratio-box">
+                <img
+                alt="review post"
+                  src={review}
+                  id="review-post-photo"
+                  className="content-ratio-box"
+                />
+              </div>
+            ) : (
+              ""
+            )}
     </div>
   );
 }

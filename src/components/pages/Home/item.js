@@ -45,7 +45,7 @@ return(
             component="img"
             alt={props.name}
             height="140"
-            image="/public/image/item/item1.jpg"
+            image={props.image}
             title="Contemplative Reptile"
           />
           <CardContent>
