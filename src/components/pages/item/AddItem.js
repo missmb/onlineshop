@@ -55,11 +55,7 @@ export default function AddItem() {
         data.append("price", price);
         data.append("description", description);
         data.append("quantity", quantity);
-        data.append("try", "try");
-        // const data = {  name, category, image, price, description, quantity };
-        // await Axios.post('http://localhost:5000/items/add', data)
-        // .then(res => console.log(res.data))
-        // .catch((err) => console.log(err.response));
+
         await apiItem.newItem(data)
         .then(res => console.log(res.data))
         .catch((err) => console.log(err.response));

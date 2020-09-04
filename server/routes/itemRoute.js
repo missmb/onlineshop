@@ -18,7 +18,6 @@ var storage = multer.diskStorage({
 });
 
 router.post("/add", multer({ storage: storage }).single("file"), async (req, res) => {
-  console.log(req.body)
   try {
     let { name, category, price, description, quantity} = req.body;
 
@@ -87,6 +86,12 @@ router.delete('/delete/:id', async (req, res) => {
   } catch (e) {
     res.status(400).json({ msg: e.message, success: false });
   }
+
+  fs.unlink("public/" + req.body.filename, function (err) {
+    if (err)  if (err) throw err;
+    console.log("file has been deleted");
+  });
+  
 });
 
 

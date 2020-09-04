@@ -26,7 +26,7 @@ export default function Item(props) {
     const deleteItem = async (e) => {
       e.preventDefault();
 
-      apiItem.deleteItem(props.idItem)
+      apiItem.deleteItem(props.idItem, props.image)
       .then(res => console.log(res.data))
         .catch((err) => console.log(err.response));
     }
