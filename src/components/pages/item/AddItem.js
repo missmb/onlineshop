@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import ErrorNotice from "../ErrorNotice";
 import apiItem from './../../../action/ItemAction';
 
-
+import {Grid} from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -44,6 +44,7 @@ export default function AddItem() {
     setImage(e.target.files[0])
       setReview(URL.createObjectURL(e.target.files[0]));
   }
+  
   const submit = async (e) => {
       e.preventDefault();
       console.log(image)
@@ -66,6 +67,8 @@ export default function AddItem() {
 
   return (
       <div>
+        <Grid container  spacing={1} justify="center">
+        <Grid item md={7} sm={12} xs={12}>
         {error && (
             <ErrorNotice message={error} clearError={() => setError(undefined)} />
         )}
@@ -76,7 +79,6 @@ export default function AddItem() {
           className={classes.input}
           style={{ display: 'none' }}
           id="raised-button-file"
-          multiple
           type="file"
           onChange={onImageChange}
         />
@@ -97,14 +99,17 @@ export default function AddItem() {
       onChange={(e) => setCategory(e.target.value)}/>
       <Button
         type="submit"
-        fullWidth
         variant="contained"
         color="primary"
         className={classes.submit}>Add Item</Button>
     </form>
+    </Grid>
+    <Grid item md={5} sm={12} xs={12}>
     {review ? (
               <div className="ratio-box">
                 <img
+                width="600"
+                height="450"
                 alt="review post"
                   src={review}
                   id="review-post-photo"
@@ -114,6 +119,8 @@ export default function AddItem() {
             ) : (
               ""
             )}
+      </Grid>
+    </Grid>
     </div>
   );
 }

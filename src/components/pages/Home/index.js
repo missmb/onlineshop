@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import UserContext from "../../../context/userContext";
 import apiItem from '../../../action/ItemAction';
-import Item from './item';
+import Item from '../item/item';
 import { Grid } from "@material-ui/core";
 
 export default function Home() {

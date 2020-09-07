@@ -5,7 +5,7 @@ import Navigation from "./components/Layout/Navigation";
 import Home from "./components/pages/Home/index";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
-import Items from "./components/pages/item";
+import Items from "./components/pages/item/AddItem";
 import DetailItem from "./components/pages/item/DetailItem";
 import UserContext from "./context/userContext";
 
