@@ -32,7 +32,6 @@ export default function DetailItem(props) {
 
     const [items, setItems] = useState([]);
     const [open, setOpen] = useState(false);
-    // const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [image, setImage] = useState(null);
     const [category, setCategory] = useState("");
@@ -72,7 +71,6 @@ export default function DetailItem(props) {
         const data = new FormData();
         data.append("file", image);
         data.append("category", category);
-        // data.append("name", name);
         data.append("price", price);
         data.append("description", description);
         data.append("quantity", quantity);
@@ -91,7 +89,7 @@ export default function DetailItem(props) {
             <Grid item md={12} sm={12} xs={12} className="center">
               <h1>{items.name}</h1>
             </Grid>
-            <Grid item md={7} sm={12} xs={12}>
+            <Grid item md={6} sm={12} xs={12}>
               <h3>price        :  {items.price}</h3>
               <h3>Quantity     :  {items.quantity}</h3>
               <h3>category  :  {items.category}</h3>
@@ -110,6 +108,7 @@ export default function DetailItem(props) {
             }}
           />
             </Grid>
+            <Grid item md={12} sm={12} xs={12}></Grid>
             <Button size="small" color="primary" onClick={openDialog}>
             Edit Data
           </Button>
@@ -161,8 +160,6 @@ export default function DetailItem(props) {
                           Upload
                         </Button>
                       </label> 
-                    {/* <TextField id="name" label="name" variant="filled" value={name}
-                    onChange={(e) => setName(e.target.value)}/> */}
                     <TextField id="description" label="description" variant="filled" rows={5} value={description}
                     onChange={(e) => setDescription(e.target.value)}/>
                     <TextField id="quantity" label="quantity" variant="filled"  value={quantity}
@@ -171,20 +168,14 @@ export default function DetailItem(props) {
                     onChange={(e) => setPrice(e.target.value)}/>
                     <TextField id="category" label="category" variant="filled" value={category}
                     onChange={(e) => setCategory(e.target.value)}/>
-                    {/* <Button
-                      type="submit"
-                      variant="contained"
-                      color="primary"
-                      className={saveData}>Add Item</Button> */}
                   </form>
-                 
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={closeDialog} color="primary">
                     Cancel
                   </Button>
                   <Button onClick={saveData} color="primary">
-                    upload
+                    Save Data
                   </Button>
                 </DialogActions>
               </Dialog>

@@ -75,7 +75,7 @@ router.get('/detail/:name', async (req, res) => {
 
 router.post ('/detail/:name/edit', multer({ storage: storage }).single("file"), async (req, res) => {
   
-  // router.post ('/detail/:name/edit', async (req, res) => {
+  
   Item.findOne({name : req.params.name}).then((data) => {
     if (!data) res.status(404).send("data is not found");
     else {
@@ -85,7 +85,6 @@ router.post ('/detail/:name/edit', multer({ storage: storage }).single("file"), 
         console.log("file has been deleted");
       });
         (data.image = "/image/item/" + req.file.filename),
-        // (data.name = req.body.name),
         (data.category = req.body.address),
         (data.description = req.body.description),
         (data.price = req.body.price),

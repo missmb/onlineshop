@@ -12,7 +12,6 @@ export default function Home() {
 
   const loadItem = async () => {
     const ItemsData = await apiItem.getItems();
-    console.log(ItemsData)
     setItems(ItemsData.data)
   };
 
