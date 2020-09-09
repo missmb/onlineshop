@@ -1,6 +1,7 @@
-import React, { useContext } from "react";
+import React, { useContext,useState, useEffect} from "react";
 import { useHistory } from "react-router-dom";
 import UserContext from "../../context/userContext";
+import apiItem from '../../action/ItemAction';
 
 import clsx from 'clsx';
 import {fade, makeStyles, useTheme } from '@material-ui/core/styles';
@@ -19,10 +20,18 @@ import QuestionAnswer from '@material-ui/icons/QuestionAnswer';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import SearchIcon from '@material-ui/icons/Search';
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import InputBase from '@material-ui/core/InputBase';
+import { Button } from "@material-ui/core";
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
+  nav: {
+    marginBottom: 30
+  },
   grow: {
     flexGrow: 1,
   },
@@ -80,6 +89,30 @@ const useStyles = makeStyles((theme) => ({
   inputRoot: {
     color: 'inherit',
   },
+  search: {
+    position: 'relative',
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(theme.palette.common.black, 0.15),
+    '&:hover': {
+      backgroundColor: fade(theme.palette.common.black, 0.25),
+    },
+    marginRight: theme.spacing(2),
+    marginLeft: 0,
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: theme.spacing(3),
+      width: 'auto',
+    },
+  },
+  searchIcon: {
+    padding: theme.spacing(0, 2),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
@@ -107,15 +140,27 @@ const useStyles = makeStyles((theme) => ({
 export default function Navigation() {
   const { userData, setUserData } = useContext(UserContext);
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-  const [ProfileCover, setProfileCover] = React.useState("");
+  const [open, setOpen] = useState(false);
+  const [ProfileCover, setProfileCover] = useState("");
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  const [Search, setSearch] = useState("")
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const history = useHistory();
+
+  const [items, setItems] = useState([]);
+
+  const loadItem = async () => {
+    const ItemsData = await apiItem.getItems();
+    setItems(ItemsData.data)
+  };
+
+  useEffect(() => {
+    loadItem()
+  },[])
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -144,6 +189,10 @@ export default function Navigation() {
     localStorage.setItem("auth-token", "");
   };
 
+  const handleSearch = async (e) => {
+    history.push("/search/"+ Search);
+  };
+  
   const menuId = 'primary-search-account-menu';
   
   const mobileMenuId = 'primary-search-account-menu-mobile';
@@ -192,7 +241,7 @@ export default function Navigation() {
   );
 
   return (
-    <div>
+    <div className={classes.nav}>
          <div className={classes.grow}>
          <CssBaseline />
          <AppBar
@@ -205,6 +254,23 @@ export default function Navigation() {
              <Typography variant="h6" noWrap button component={Link} to="/" style={{color: 'white'}} className={clsx(classes.menuButton, open && classes.hide)}>
                onlineShop
              </Typography>
+             <div style={{ width: 300 }}> 
+             {/* <div className={classes.search}>  */}
+            {/* <div className={classes.searchIcon}>
+              <SearchIcon />
+            </div> */}
+            <form onSubmit={handleSearch}>
+            <Autocomplete
+              id="free-solo-demo"
+              freeSolo
+              options={items.map((option) => option.name)}
+              renderInput={(params) => (
+                <TextField {...params} label="Search Product" margin="normal" variant="outlined" 
+                onChange={(e) => setSearch(e.target.value)}/>
+              )}
+            />
+            </form>
+          </div>
              <div className={classes.grow} />
              <div className={classes.sectionDesktop}>
                <IconButton aria-label="show 4 new mails" color="inherit" >

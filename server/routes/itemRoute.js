@@ -115,6 +115,47 @@ router.delete('/delete/:id', async (req, res) => {
   
 });
 
+router.get('/search/:name', async (req, res) => {
+  // try {
+  //   const item = await Item.findOne({name : req.params.name});
+  //   if (!item)
+  //     return res.status('400').json({
+  //       error: "Product not found"
+  //     })
+  //    return res.status(200).json({ success: true, data : item});
+  // } catch (err) {
+  //   return res.status('400').json({
+  //     error: "Could not retrieve product"
+  //   })
+  // }
+  // Item.find({ name: req.params.name }, function(err, result){
+  //   if (result) {
+  //     res.json(result);
+  //   } else {
+  //     res.json("data not found");
+  //   }
+  // }).limit(10);
+  // Item.find({ name: new RegExp(req.params.name, "i") }, function(err, result){
+  //   console.log(result)
+  //   if (result) {
+  //     res.json(result);
+  //   } else {
+  //     res.json("data not found");
+  //   }
+  // }).limit(10);
+  try {
+    const item = await Item.find({name : req.params.name});
+    if (!item)
+      return res.status('400').json({
+        error: "Product not found"
+      })
+     return res.status(200).json({ success: true, data : item});
+  } catch (err) {
+    return res.status('400').json({
+      error: "Could not retrieve product"
+    })
+  };
+});
 
 
 module.exports = router;

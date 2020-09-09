@@ -2,38 +2,34 @@ import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import UserContext from "../../../context/userContext";
 import apiItem from '../../../action/ItemAction';
-import Item from '../item/item';
+import Item from './item';
 import { Grid } from "@material-ui/core";
-import Navigation from "./../../Layout/Navigation";
+import Button from '@material-ui/core/Button';
 
-export default function Home() {
+export default function SearchItems(props) {
   const { userData } = useContext(UserContext);
 
   const [items, setItems] = useState([]);
 
   const loadItem = async () => {
-    const ItemsData = await apiItem.getItems();
-    // const dua = []
-    // for(var i =0 ; i <3 ; i++){
-    //   dua.push(ItemsData.data[i])
-    // }
-    // setItems(dua)
-    setItems(ItemsData.data)
+    const ItemsData = await apiItem.searchItem(props.match.params.name);
+    setItems(ItemsData.data.data)
   };
 
   useEffect(() => {
     loadItem()
   },[])
+  
   return (
     <div className="page center">
-      <Navigation />
-      {userData.user ? (
-        <>
-        <h1>Welcome {userData.user.username}</h1>
-        <Link to="/items">Add Item</Link>
+      <Button variant="raised" component="span" >
+      <Link to="/"> Back to Home</Link>
+          </Button>
+        <h1>Result Search</h1>
 
       <Grid container spacing={1} justify="center">
-      {items.map((item) => (
+      {items[0] == null ? ( < h1>nothing product with " { props.match.params.name } " name</h1> 
+              ) : (items.map((item) => (
                 <Item
                   key={item._id}
                   idItem={item._id}
@@ -43,15 +39,9 @@ export default function Home() {
                   description={item.description}
                   category={item.category}
                 />
-              ))}
+              )))}
               </Grid>
-        </>
-      ) : (
-        <>
-          <h2>You are not logged in</h2>
-          <Link to="/login">Log in</Link>
-        </>
-      )}
+      
     </div>
   );
 }

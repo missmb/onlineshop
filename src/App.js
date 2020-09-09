@@ -10,6 +10,7 @@ import DetailItem from "./components/pages/item/DetailItem";
 import UserContext from "./context/userContext";
 
 import "./App.css";
+import SearchItems from "./components/pages/item/SearchItems";
 
 export default function App() {
   const [userData, setUserData] = useState({
@@ -47,7 +48,7 @@ export default function App() {
     <>
       <BrowserRouter>
         <UserContext.Provider value={{ userData, setUserData }}>
-          <Navigation />
+          {/* <Navigation /> */}
           <div className="container">
             <Switch>
               <Route exact path="/" component={Home} />
@@ -55,6 +56,7 @@ export default function App() {
               <Route path="/register" component={Register} />
               <Route path="/items" component={Items} />
               <Route path="/detail/:name" component={DetailItem} />
+              <Route path="/search/:name" component={SearchItems} />
             </Switch>
           </div>
         </UserContext.Provider>
