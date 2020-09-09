@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Axios from "axios";
-import Navigation from "./components/Layout/Navigation";
 import Home from "./components/pages/Home/index";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
@@ -48,7 +47,6 @@ export default function App() {
     <>
       <BrowserRouter>
         <UserContext.Provider value={{ userData, setUserData }}>
-          {/* <Navigation /> */}
           <div className="container">
             <Switch>
               <Route exact path="/" component={Home} />

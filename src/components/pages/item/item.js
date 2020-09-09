@@ -39,8 +39,8 @@ export default function Item(props) {
     }
 
 return(
-    <Card className={classes.root}>
-        <CardActionArea>
+    <Card className={classes.root} >
+        <CardActionArea onClick={gotodetail}>
           <CardMedia
             component="img"
             alt={props.name}
@@ -49,7 +49,7 @@ return(
             title="Contemplative Reptile"
           />
           <CardContent>
-            <Typography gutterBottom variant="h5" component="h2" onClick={gotodetail}>
+            <Typography gutterBottom variant="h5" component="h2">
               {props.name}
             </Typography>
             <Typography gutterBottom variant="h5" component="h2">

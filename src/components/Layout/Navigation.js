@@ -4,7 +4,7 @@ import UserContext from "../../context/userContext";
 import apiItem from '../../action/ItemAction';
 
 import clsx from 'clsx';
-import {fade, makeStyles, useTheme } from '@material-ui/core/styles';
+import {makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -20,11 +20,8 @@ import QuestionAnswer from '@material-ui/icons/QuestionAnswer';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import SearchIcon from '@material-ui/icons/Search';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import InputBase from '@material-ui/core/InputBase';
-import { Button } from "@material-ui/core";
 
 const drawerWidth = 240;
 
@@ -85,43 +82,6 @@ const useStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
     marginLeft: 0,
-  },
-  inputRoot: {
-    color: 'inherit',
-  },
-  search: {
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.black, 0.15),
-    '&:hover': {
-      backgroundColor: fade(theme.palette.common.black, 0.25),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
-      width: 'auto',
-    },
-  },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
   },
   sectionDesktop: {
     display: 'none',
@@ -255,14 +215,13 @@ export default function Navigation() {
                onlineShop
              </Typography>
              <div style={{ width: 300 }}> 
-             {/* <div className={classes.search}>  */}
-            {/* <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div> */}
             <form onSubmit={handleSearch}>
             <Autocomplete
               id="free-solo-demo"
               freeSolo
+              onInputChange={(event, newInputValue) => {
+                setSearch(newInputValue); console.log(newInputValue)
+              }}
               options={items.map((option) => option.name)}
               renderInput={(params) => (
                 <TextField {...params} label="Search Product" margin="normal" variant="outlined" 

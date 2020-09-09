@@ -6,7 +6,8 @@ import {Grid} from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-
+import Navigation from "./../../Layout/Navigation";
+import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,6 +25,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const filterOptions = createFilterOptions({
+  matchFrom: 'start',
+  stringify: (option) => option.category,
+});
+
+
 export default function AddItem() {
   const classes = useStyles()
 
@@ -39,15 +46,12 @@ export default function AddItem() {
     
   const onImageChange = async(e) => {
     e.preventDefault();
-      // const data = new FormData();
-      // data.append("file", e.target.files[0]);
     setImage(e.target.files[0])
       setReview(URL.createObjectURL(e.target.files[0]));
   }
   
   const submit = async (e) => {
       e.preventDefault();
-      console.log(image)
       try {
         const data = new FormData();
         data.append("file", image);
@@ -57,6 +61,7 @@ export default function AddItem() {
         data.append("description", description);
         data.append("quantity", quantity);
 
+        console.log(data)
         await apiItem.newItem(data)
         .then(res => console.log(res.data))
         .catch((err) => console.log(err.response));
@@ -64,9 +69,16 @@ export default function AddItem() {
         err.response.data.msg && setError(err.response.data.msg);
       }
     };
-
+    const categoryItem = [
+      { category: 'soap'},
+      { category: 'food'},
+      { category: 'snack'},
+      { category: 'water'},
+      { category: 'cofee'},
+    ];
   return (
       <div>
+         <Navigation />
         <Grid container  spacing={1} justify="center">
         <Grid item md={7} sm={12} xs={12}>
         {error && (
@@ -95,8 +107,19 @@ export default function AddItem() {
       onChange={(e) => setQuantity(e.target.value)}/>
       <TextField id="price" label="price" variant="filled" type="number"
       onChange={(e) => setPrice(e.target.value)}/>
-      <TextField id="category" label="category" variant="filled" 
-      onChange={(e) => setCategory(e.target.value)}/>
+       <Autocomplete
+      id="category"
+      options={categoryItem}
+      getOptionLabel={(option) => option.category}
+      filterOptions={filterOptions}
+      onInputChange={(event, newInputValue) => {
+        setCategory(newInputValue); console.log(newInputValue)
+      }}
+      style={{ width: 200 }}
+      renderInput={(params) => <TextField {...params} label="category" variant="filled"/>}
+    />
+      {/* <TextField id="category" label="category" variant="filled" 
+      onChange={(e) => setCategory(e.target.value)}/> */}
       <Button
         type="submit"
         variant="contained"
