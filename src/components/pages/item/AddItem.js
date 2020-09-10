@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import ErrorNotice from "../ErrorNotice";
 import apiItem from './../../../action/ItemAction';
+import { Link } from "react-router-dom";
 
 import {Grid} from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
@@ -118,8 +119,6 @@ export default function AddItem() {
       style={{ width: 200 }}
       renderInput={(params) => <TextField {...params} label="category" variant="filled"/>}
     />
-      {/* <TextField id="category" label="category" variant="filled" 
-      onChange={(e) => setCategory(e.target.value)}/> */}
       <Button
         type="submit"
         variant="contained"
@@ -144,6 +143,9 @@ export default function AddItem() {
             )}
       </Grid>
     </Grid>
+    <Button size="medium" color="primary" variant="contained">
+        <Link to="/items/">List Item</Link>
+        </Button>
     </div>
   );
 }

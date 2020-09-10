@@ -27,7 +27,7 @@ const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   nav: {
-    marginBottom: 30
+    marginBottom: 80
   },
   grow: {
     flexGrow: 1,

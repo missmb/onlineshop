@@ -80,12 +80,14 @@ router.post ('/detail/:name/edit', multer({ storage: storage }).single("file"), 
     if (!data) res.status(404).send("data is not found");
     else {
       console.log(data.image)
+      console.log(req.file.filename)
       fs.unlink("public/" + data.image, function (err) {
         if (err)  if (err) throw err;
         console.log("file has been deleted");
       });
+      
         (data.image = "/image/item/" + req.file.filename),
-        (data.category = req.body.address),
+        (data.category = req.body.category),
         (data.description = req.body.description),
         (data.price = req.body.price),
         (data.quantity = req.body.quantity),

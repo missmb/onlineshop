@@ -11,6 +11,8 @@ import {
   TextField
 } from "@material-ui/core";
 import ErrorNotice from "../ErrorNotice";
+import Navigation from "./../../Layout/Navigation";
+import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,6 +28,11 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
 }));
+
+const filterOptions = createFilterOptions({
+  matchFrom: 'start',
+  stringify: (option) => option.category,
+});
 
 export default function DetailItem(props) {
     const classes = useStyles()
@@ -67,6 +74,7 @@ export default function DetailItem(props) {
     const saveData = async (e) => {
       e.preventDefault();
       console.log(image)
+      console.log(category)
       try {
         const data = new FormData();
         data.append("file", image);
@@ -81,10 +89,19 @@ export default function DetailItem(props) {
       } catch (err) {
         err.response.data.msg && setError(err.response.data.msg);
       }
-    }
+    };
+
+    const categoryItem = [
+      { category: 'soap'},
+      { category: 'food'},
+      { category: 'snack'},
+      { category: 'water'},
+      { category: 'cofee'},
+    ];
 
   return (
     <div>
+      <Navigation/>
       <Grid container  spacing={1} justify="center">
             <Grid item md={12} sm={12} xs={12} className="center">
               <h1>{items.name}</h1>
@@ -166,8 +183,20 @@ export default function DetailItem(props) {
                     onChange={(e) => setQuantity(e.target.value)}/>
                     <TextField id="price" label="price" variant="filled" type="number" value={price}
                     onChange={(e) => setPrice(e.target.value)}/>
-                    <TextField id="category" label="category" variant="filled" value={category}
-                    onChange={(e) => setCategory(e.target.value)}/>
+                     <Autocomplete
+                      id="category"
+                      options={categoryItem}
+                      getOptionLabel={(option) => option.category}
+                      filterOptions={filterOptions}
+                      onInputChange={(event, newInputValue) => {
+                        setCategory(newInputValue); console.log(newInputValue)
+                      }}
+                      style={{ width: 200 }}
+                      renderInput={(params) => <TextField {...params} label="category" variant="filled"/>} 
+                    />
+
+                    {/* <TextField id="category" label="category" variant="filled" value={category}
+                    onChange={(e) => setCategory(e.target.value)}/> */}
                   </form>
                 </DialogContent>
                 <DialogActions>

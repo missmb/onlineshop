@@ -4,6 +4,7 @@ import Axios from "axios";
 import Home from "./components/pages/Home/index";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
+import ListItems from "./components/pages/item/ListItems";
 import Items from "./components/pages/item/AddItem";
 import DetailItem from "./components/pages/item/DetailItem";
 import UserContext from "./context/userContext";
@@ -52,7 +53,8 @@ export default function App() {
               <Route exact path="/" component={Home} />
               <Route path="/login" component={Login} />
               <Route path="/register" component={Register} />
-              <Route path="/items" component={Items} />
+              <Route exact path="/items" component={ListItems} />
+              <Route exact path="/items/add" component={Items} />
               <Route path="/detail/:name" component={DetailItem} />
               <Route path="/search/:name" component={SearchItems} />
             </Switch>
