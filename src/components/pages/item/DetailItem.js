@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import apiItem from './../../../action/ItemAction';
+import apiItem from '../../../action/ItemAction';
 import {Grid} from "@material-ui/core";
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
@@ -11,7 +11,7 @@ import {
   TextField
 } from "@material-ui/core";
 import ErrorNotice from "../ErrorNotice";
-import Navigation from "./../../Layout/Navigation";
+import Navigation from "../../Layout/Navigation";
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
 
 const useStyles = makeStyles((theme) => ({
@@ -54,6 +54,7 @@ export default function DetailItem(props) {
     };
   
     useEffect(() => {
+      console.log(props.match.params.name)
       loadItem()
     },[])
 

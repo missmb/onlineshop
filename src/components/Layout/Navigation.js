@@ -120,6 +120,7 @@ export default function Navigation() {
 
   useEffect(() => {
     loadItem()
+    // console.log(userData)
   },[])
 
   const handleProfileMenuOpen = (event) => {
@@ -303,7 +304,7 @@ export default function Navigation() {
          open={isMenuOpen}
          onClose={handleMenuClose}
        >
-         <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+         <MenuItem onClick={handleMenuClose} component={Link} to="/users">Profile</MenuItem>
          <MenuItem onClick={handleMenuClose}>My account</MenuItem>
          <MenuItem onClick={logout}>LogOut</MenuItem>
        </Menu> }

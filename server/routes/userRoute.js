@@ -3,6 +3,22 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const auth = require("./../auth");
 const User = require("../models/userModel");
+const db = require("mongoose");
+var multer = require("multer");
+var path = require("path");
+var fs = require("fs");
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/image/item");
+  },
+  filename: function (req, file, cb) {
+    cb(
+      null,
+      "item_" + Date.now() + path.extname(file.originalname)
+    );
+  },
+});
 
 router.post("/register", async (req, res) => {
   try {
@@ -105,6 +121,45 @@ router.get("/", auth, async (req, res) => {
   res.json({
     username: user.username,
     id: user._id,
+  });
+});
+
+router.get('/:user', async (req, res) => {
+  console.log(req.params.user)
+  try {
+    const user = await User.findOne({username : req.params.user});
+    if (!user)
+      return res.status('400').json({
+        error: "Product not found"
+      })
+     return res.status(200).json({ success: true, data : user});
+  } catch (err) {
+    return res.status('400').json({
+      error: "Could not retrieve product"
+    })
+  }
+});
+
+router.post ('/detail/:name/edit', multer({ storage: storage }).single("file"), async (req, res) => {
+  
+  
+  Item.findOne({name : req.params.name}).then((data) => {
+    if (!data) res.status(404).send("data is not found");
+    else {
+      console.log(data.image)
+      console.log(req.file.filename)
+      fs.unlink("public/" + data.image, function (err) {
+        if (err)  if (err) throw err;
+        console.log("file has been deleted");
+      });
+      
+        (data.image = "/image/item/" + req.file.filename),
+        (data.category = req.body.category),
+        (data.description = req.body.description),
+        (data.price = req.body.price),
+        (data.quantity = req.body.quantity),
+        data.save();
+    }
   });
 });
 
