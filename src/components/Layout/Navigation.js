@@ -120,7 +120,6 @@ export default function Navigation() {
 
   useEffect(() => {
     loadItem()
-    // console.log(userData)
   },[])
 
   const handleProfileMenuOpen = (event) => {
@@ -148,6 +147,15 @@ export default function Navigation() {
       user: undefined,
     });
     localStorage.setItem("auth-token", "");
+    history.push("/");
+  };
+
+  const gotoprofile = () => {
+    if (userData.user.username == null) {
+     console.log("nothong user")
+    } else {
+      window.location.href = "/users/" + userData.user.username ;
+    }
   };
 
   const handleSearch = async (e) => {
@@ -251,17 +259,13 @@ export default function Navigation() {
                  onClick={handleProfileMenuOpen}
                  color="inherit"
                >
-                 { userData.user == null ? 
+                 
                  <IconButton
                  aria-label="Account"
                  color="inherit"
                >
                  <AccountCircle  />
-               </IconButton>  : <img
-                     className="img-profile-card"
-                     src={ProfileCover}
-                     alt=""
-                   /> }
+               </IconButton>  
                    <IconButton
                  aria-label="Account"
                  color="inherit"
@@ -304,7 +308,7 @@ export default function Navigation() {
          open={isMenuOpen}
          onClose={handleMenuClose}
        >
-         <MenuItem onClick={handleMenuClose} component={Link} to="/users">Profile</MenuItem>
+         <MenuItem onClick={gotoprofile}>Profile</MenuItem>
          <MenuItem onClick={handleMenuClose}>My account</MenuItem>
          <MenuItem onClick={logout}>LogOut</MenuItem>
        </Menu> }

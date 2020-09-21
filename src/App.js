@@ -58,7 +58,8 @@ export default function App() {
               <Route exact path="/items/add" component={Items} />
               <Route path="/detail/:name" component={DetailItem} />
               <Route path="/search/:name" component={SearchItems} />
-              <Route path="/account/:user" component={Account} />
+              {/* <Route path="/users" component={Account} /> */}
+              <Route path="/users/:user" component={Account} />
             </Switch>
           </div>
         </UserContext.Provider>

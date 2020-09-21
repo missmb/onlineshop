@@ -1,19 +1,17 @@
 import urlBase from '../route/baseURI';
 
 const getUser = () => urlBase.get("/");
-const newItem = (ItemData) => urlBase.post("/items/add" , ItemData);
-const deleteItem = (idItem, image) => urlBase.delete("/items/delete/" + idItem , { data: { filename: image } });
+const deleteUser = (idUser, image) => urlBase.delete("/users/delete/" + idUser , { data: { filename: image } });
 const detailUser = (user) => urlBase.get("/users/" + user);
-const editUser = (name, data) => urlBase.post("/users/detail/" + name+ "/edit", data);
-const searchItem = (name) => urlBase.get("/items/search/"+ name)
+const editUser = (user, data) => urlBase.post("/users/" + user+ "/edit", data);
+const editUserPic = (name, data) => urlBase.post("/users/" + name+ "/editpic", data);
 
 const apiUser = {
   getUser,
-  newItem,
-  deleteItem,
+  deleteUser,
   detailUser,
   editUser,
-  searchItem
+  editUserPic
 };
 
 export default apiUser;

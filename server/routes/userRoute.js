@@ -10,12 +10,12 @@ var fs = require("fs");
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "public/image/item");
+    cb(null, "public/image/user");
   },
   filename: function (req, file, cb) {
     cb(
       null,
-      "item_" + Date.now() + path.extname(file.originalname)
+      "user_" + Date.now() + path.extname(file.originalname)
     );
   },
 });
@@ -125,7 +125,6 @@ router.get("/", auth, async (req, res) => {
 });
 
 router.get('/:user', async (req, res) => {
-  console.log(req.params.user)
   try {
     const user = await User.findOne({username : req.params.user});
     if (!user)
@@ -140,25 +139,54 @@ router.get('/:user', async (req, res) => {
   }
 });
 
-router.post ('/detail/:name/edit', multer({ storage: storage }).single("file"), async (req, res) => {
-  
-  
-  Item.findOne({name : req.params.name}).then((data) => {
+router.post ('/:user/editpic', multer({ storage: storage }).single("file"), async (req, res) => {
+
+  User.findOne({username : req.params.user}).then((data) => {
     if (!data) res.status(404).send("data is not found");
     else {
       console.log(data.image)
       console.log(req.file.filename)
-      fs.unlink("public/" + data.image, function (err) {
-        if (err)  if (err) throw err;
-        console.log("file has been deleted");
-      });
-      
-        (data.image = "/image/item/" + req.file.filename),
-        (data.category = req.body.category),
-        (data.description = req.body.description),
-        (data.price = req.body.price),
-        (data.quantity = req.body.quantity),
+      if(data.image !== "/image/user/blankProfile.png"){
+        fs.unlink("public/" + data.image, function (err) {
+          if (err)  if (err) throw err;
+          console.log("file has been deleted");
+        });
+      }
+        (data.image = "/image/user/" + req.file.filename)
         data.save();
+        res.status(200).send(data);
+    }
+  });
+});
+
+router.post ('/:user/edit',  async (req, res) => {
+  console.log(req.params.user)
+  console.log(req.params.name)
+  User.findOne({username : req.params.user}).then((data) => {
+    // const user = await User.findOne({username : req.params.user});
+    // if (!user)
+    //   return res.status('400').json({
+    //     error: "Product not found"
+    //   })
+    //  return res.status(200).json({ success: true, data : user});
+    if (!data) res.status(404).send("data is not found");
+    else {
+        (data.address = req.body.address),
+        (data.bio = req.body.bio),
+        (data.gender = req.body.gender),
+        (data.phone = req.body.phone),
+        data.save();
+    //     let { address, bio, gender, phone} = req.body;
+
+    //     const newItem = new Item({
+    //       address, bio, gender, phone
+    //     });
+    //  User.save();
+   console.log(data.email) 
+   console.log(data.phone) 
+   console.log(data.phone) 
+   console.log(req.body.phone) 
+    res.status(200).send(data);
     }
   });
 });

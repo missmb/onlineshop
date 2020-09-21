@@ -29,7 +29,7 @@ export default function Home() {
       <Navigation />
       {userData.user ? (
         <>
-        <h1>Welcome {userData.user.username}</h1>
+        <h1>Welcome {userData.user.username} </h1>
         <Link to="/items">Add Item</Link>
 
       <Grid container spacing={1} justify="center">

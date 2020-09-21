@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Link } from "react-router-dom";
 import UserContext from "../../../context/userContext";
 import apiUser from '../../../action/UserAction';
-import Item from '../item/item';
 import { Grid } from "@material-ui/core";
 import Navigation from "./../../Layout/Navigation";
 import Button from '@material-ui/core/Button';
@@ -34,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 
 const filterOptions = createFilterOptions({
   matchFrom: 'start',
-  stringify: (option) => option.category,
+  stringify: (option) => option.gender,
 });
 
 export default function Account(props) {
@@ -42,17 +40,18 @@ export default function Account(props) {
 
     const [user, setUser] = useState([]);
     const [open, setOpen] = useState(false);
-    const [description, setDescription] = useState("");
+    const [openpic, setOpenPic] = useState(false);
     const [image, setImage] = useState(null);
-    const [category, setCategory] = useState("");
-    const [quantity, setQuantity] = useState("");
-    const [price, setPrice] = useState("");  
+    const [Gender, setGender] = useState("");
+    const [Phone, setPhone] = useState(0);
+    const [Address, setAddress] = useState("");
+    const [Bio, setBio] = useState("");  
     const [error, setError] = useState();
     const [review, setReview] = useState();
 
     const { userData } = useContext(UserContext);
 
-    const loadItem = async () => {
+    const loadUser = async () => {
       const UserData = await apiUser.detailUser(props.match.params.user);
       
       console.log(UserData.data.data)
@@ -61,7 +60,7 @@ export default function Account(props) {
   
     useEffect(() => {
       console.log(props.match.params.user)
-      loadItem()
+      loadUser()
       
     },[])
 
@@ -73,6 +72,14 @@ export default function Account(props) {
       setOpen(false);
     }
 
+    const openDialogPic = () => {
+      setOpenPic(true);
+    }
+
+    const closeDialogPic = () => {
+      setOpenPic(false);
+    }
+
     const onImageChange = async(e) => {
       e.preventDefault();
       setImage(e.target.files[0])
@@ -81,17 +88,18 @@ export default function Account(props) {
 
     const saveData = async (e) => {
       e.preventDefault();
-      console.log(image)
-      console.log(category)
       try {
-        const data = new FormData();
-        data.append("file", image);
-        data.append("category", category);
-        data.append("price", price);
-        data.append("description", description);
-        data.append("quantity", quantity);
-        console.log(data)
-        await apiUser.editUser(props.match.params.name,data)
+        console.log(Phone)
+        const usedata = new FormData();
+        usedata.append("address", Address);
+        usedata.append("gender", Gender);
+        usedata.append("phone", Phone);
+        usedata.append("bio", Bio);
+        console.log(usedata)
+        console.log(props.match.params.user)
+        await apiUser.editUser(props.match.params.user,usedata)
+        // const data = { Address, Bio, Gender, Phone };
+        // await apiUser.editUser(props.match.params.user,data)
         .then(res => console.log(res.data))
         .catch((err) => console.log(err.response));
       } catch (err) {
@@ -99,12 +107,27 @@ export default function Account(props) {
       }
     };
 
-    const categoryItem = [
-      { category: 'soap'},
-      { category: 'food'},
-      { category: 'snack'},
-      { category: 'water'},
-      { category: 'cofee'},
+    const savePic = async (e) => {
+      e.preventDefault();
+      console.log(image)
+      try {
+        const data = new FormData();
+        data.append("file", image);
+        console.log(data)
+        await apiUser.editUserPic(props.match.params.user,data)
+        .then(res => console.log(res.data))
+        .catch((err) => console.log(err.response));
+      } catch (err) {
+        err.response.data.msg && setError(err.response.data.msg);
+      }
+    };
+
+
+    const genderUser = [
+      { gender: 'Male'},
+      { gender: 'Female'},
+      { gender: 'Custom'},
+      { gender: 'Prefer Not To say'}
     ];
   return (
     <div className="page center">
@@ -114,9 +137,12 @@ export default function Account(props) {
               <h1>{user.name}</h1>
             </Grid>
             <Grid item md={6} sm={12} xs={12}>
-              <h3>username        :  {user.username}</h3>
-              <h3>email     :  {user.email}</h3>
-              <h3>address  :  {user.address}</h3>
+              <h3>Username        :  {user.username}</h3>
+              <h3>E-mail     :  {user.email}</h3>
+              <h3>Phone Number  :  {user.phone}</h3>
+              <h3>Gender  :  {user.gender}</h3>
+              <h3>Address  :  {user.address}</h3>
+              <h3>Bio  :  {user.bio}</h3>
             </Grid>
 
             <Grid item md={5} sm={12} xs={12}>
@@ -129,6 +155,7 @@ export default function Account(props) {
               objectFit: "cover",
               objectPosition: "0 0",
             }}
+            onClick={openDialogPic}
           />
             </Grid>
             <Grid item md={12} sm={12} xs={12}></Grid>
@@ -143,11 +170,52 @@ export default function Account(props) {
             >
             <DialogTitle id="form-dialog-title">Edit Data </DialogTitle>
             <DialogContent>
+              {error && (
+                  <ErrorNotice message={error} clearError={() => setError(undefined)} />
+              )}
+              <form className={classes.root} onSubmit={saveData} noValidate autoComplete="off">
+                <TextField id="Phone" label="Phone" variant="filled" type="number" value={Phone}
+                onChange={(e) => setPhone(e.target.value)}/>
+                <Autocomplete
+                  id="gender"
+                  options={genderUser}
+                  getOptionLabel={(option) => option.gender}
+                  filterOptions={filterOptions}
+                  onInputChange={(event, newInputValue) => {
+                    setGender(newInputValue); console.log(newInputValue)
+                  }}
+                  style={{ width: 200 }}
+                  renderInput={(params) => <TextField {...params} label="gender" variant="filled"/>} 
+                />
+                <TextField id="Address" label="Address" variant="filled" rows={5} value={Address}
+                onChange={(e) => setAddress(e.target.value)}/>
+                <TextField id="Bio" label="Bio" variant="filled"  value={Bio}
+                onChange={(e) => setBio(e.target.value)}/>
+              </form>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={closeDialog} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={saveData} color="primary">
+                Save Data
+              </Button>
+            </DialogActions>
+            </Dialog>
+
+
+            <Dialog
+            open={openpic}
+            close={openpic}
+            aria-labelledby="form-dialog-title"
+            >
+            <DialogTitle id="form-dialog-title">Edit Picture </DialogTitle>
+            <DialogContent>
               {review ? (
                 <div className="ratio-box">
                   <img
-                  width="600"
-                  height="450"
+                  width="400"
+                  height="350"
                   alt="review post"
                     src={review}
                     id="review-post-photo"
@@ -156,8 +224,8 @@ export default function Account(props) {
                 </div>
               ) : (
                 <img
-                width="600"
-                height="450"
+                width="400"
+                height="350"
                 alt="review post"
                   src={user.image}
                   id="review-post-photo"
@@ -167,7 +235,7 @@ export default function Account(props) {
               {error && (
                   <ErrorNotice message={error} clearError={() => setError(undefined)} />
               )}
-              <form className={classes.root} onSubmit={saveData} noValidate autoComplete="off">
+              <form className={classes.root} onSubmit={savePic} noValidate autoComplete="off">
                   <input
                     accept="image/*"
                     className={classes.input}
@@ -181,30 +249,13 @@ export default function Account(props) {
                       Upload
                     </Button>
                   </label> 
-                <TextField id="description" label="description" variant="filled" rows={5} value={description}
-                onChange={(e) => setDescription(e.target.value)}/>
-                <TextField id="quantity" label="quantity" variant="filled"  value={quantity}
-                onChange={(e) => setQuantity(e.target.value)}/>
-                <TextField id="price" label="price" variant="filled" type="number" value={price}
-                onChange={(e) => setPrice(e.target.value)}/>
-                <Autocomplete
-                  id="category"
-                  options={categoryItem}
-                  getOptionLabel={(option) => option.category}
-                  filterOptions={filterOptions}
-                  onInputChange={(event, newInputValue) => {
-                    setCategory(newInputValue); console.log(newInputValue)
-                  }}
-                  style={{ width: 200 }}
-                  renderInput={(params) => <TextField {...params} label="category" variant="filled"/>} 
-                />
               </form>
             </DialogContent>
             <DialogActions>
-              <Button onClick={closeDialog} color="primary">
+              <Button onClick={closeDialogPic} color="primary">
                 Cancel
               </Button>
-              <Button onClick={saveData} color="primary">
+              <Button onClick={savePic} color="primary">
                 Save Data
               </Button>
             </DialogActions>
